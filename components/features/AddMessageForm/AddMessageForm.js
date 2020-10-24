@@ -1,28 +1,33 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { StyleSheet, View, TextInput, Button } from 'react-native';
 
-import useMessageForm from './useMessageForm';
-
-const AddMessageForm = () => {
-
-  const {
-    message,
-    handleChangeMessage,
-  } = useMessageForm();
+const AddMessageForm = ({ 
+  value,
+  onChangeHandler,
+  onSubmitHandler,
+}) => {
 
   return ( 
     <View style={styles.container}>
       <TextInput 
         style={styles.input}
-        autoFocus={false}
-        onChangeText={handleChangeMessage}
+        value={value}
+        onChangeText={onChangeHandler}
       />
       <Button 
         title='Send'
+        onPress={onSubmitHandler}
       />
     </View>
   );
 }
+
+AddMessageForm.propTypes = {
+  value: PropTypes.string,
+  onChangeHandler: PropTypes.func.isRequired,
+  onSubmitHandler: PropTypes.func.isRequired,
+};
 
 const styles = StyleSheet.create({
   container: {

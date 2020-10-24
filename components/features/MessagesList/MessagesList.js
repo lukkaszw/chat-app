@@ -1,25 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { MY_USER_EMAIL } from "@env";
 import PropTypes from 'prop-types';
-import { SafeAreaView, ScrollView, Dimensions } from 'react-native';
+import { SafeAreaView, ScrollView } from 'react-native';
 
 import Message from '../../common/Message';
 
-const windowOnStart = Dimensions.get("window").height;
-
 const MessagesList = ({ messages }) => {
-
-  const [windowHeight, setWindowHeight] = useState(windowOnStart);
-
-  const onChangeWindowHeight = ({ window }) => {
-    setWindowHeight(window.height);
-  };
-
-  useEffect(() => {
-    Dimensions.addEventListener("change", onChangeWindowHeight);
-    return () => {
-      Dimensions.removeEventListener("change", onChangeWindowHeight);
-    };
-  });
 
   return ( 
     <SafeAreaView style={{ 
@@ -28,9 +14,10 @@ const MessagesList = ({ messages }) => {
     }}>
       <ScrollView>
           {
-            messages.map(message => (
+            messages.reverse().map(message => (
               <Message 
                 key={message.id}
+                isOwn={message.user.email === MY_USER_EMAIL}
                 {...message}
               />
             ))

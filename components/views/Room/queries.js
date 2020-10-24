@@ -11,7 +11,22 @@ export const GET_ROOM_MESSAGES = gql`
         user {
           firstName
           lastName
+          id
+          email
         }
+      }
+    }
+  }
+`;
+
+export const ADD_MESSAGE = gql`
+  mutation SendMessage($body: String!, $roomId: String!) {
+    sendMessage(body: $body, roomId: $roomId) {
+      body
+      id
+      insertedAt
+      user {
+        id
       }
     }
   }
