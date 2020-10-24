@@ -10,6 +10,8 @@ const Room = ({ route }) => {
 
   const { id, name, creator } = route.params;
 
+
+
   return ( 
     <View style={styles.container}>
       <RoomInfo 
@@ -28,6 +30,7 @@ Room.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
+    display: 'flex',
     backgroundColor: '#fff',
     height: '100%',
   }

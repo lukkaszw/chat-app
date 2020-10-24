@@ -1,32 +1,42 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { View, Dimensions } from 'react-native';
+import { SafeAreaView, ScrollView, Dimensions } from 'react-native';
 
 import Message from '../../common/Message';
 
+const windowOnStart = Dimensions.get("window").height;
+
 const MessagesList = ({ messages }) => {
 
-  const maxHeight = Dimensions.get('window').height - 141;
+  const [windowHeight, setWindowHeight] = useState(windowOnStart);
+
+  const onChangeWindowHeight = ({ window }) => {
+    setWindowHeight(window.height);
+  };
+
+  useEffect(() => {
+    Dimensions.addEventListener("change", onChangeWindowHeight);
+    return () => {
+      Dimensions.removeEventListener("change", onChangeWindowHeight);
+    };
+  });
 
   return ( 
-    <View style={{ 
+    <SafeAreaView style={{ 
       padding: 10,
-      height: maxHeight,
-      minHeight: maxHeight,
-      maxHeight: maxHeight, 
-      overflow: 'scroll', 
-      display: 'flex', 
-      flexDirection: 'column-reverse',
+      flex: 1,
     }}>
-        {
-          messages.reverse().map(message => (
-            <Message 
-              key={message.id}
-              {...message}
-            />
-          ))
-        }
-    </View>
+      <ScrollView>
+          {
+            messages.map(message => (
+              <Message 
+                key={message.id}
+                {...message}
+              />
+            ))
+          }
+      </ScrollView>
+    </SafeAreaView>
   );
 }
  
