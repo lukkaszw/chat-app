@@ -1,21 +1,29 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { View } from 'react-native';
 import { useQuery } from '@apollo/client';
 import { GET_ROOMS } from './queries';
 
 import Loader from '../../common/Loader';
+import RoomLink from '../../common/RoomLink';
 
-const Rooms = () => {
+const Rooms = ({ navigation }) => {
   const { data, loading } = useQuery(GET_ROOMS);
 
   if (loading) return <Loader />;
 
   return (
-      <Text>
+      <View>
         {
-          JSON.stringify(data)
+
+          data.usersRooms.rooms.map(room => (
+            <RoomLink 
+              onPressHandler={() => navigation.navigate('Room',  { id: room.id } )} 
+              key={room.id}
+              {...room}
+            />
+          ))
         }
-      </Text>
+      </View>
   )
 }
 
