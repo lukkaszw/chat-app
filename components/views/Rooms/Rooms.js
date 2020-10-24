@@ -11,13 +11,23 @@ const Rooms = ({ navigation }) => {
 
   if (loading) return <Loader />;
 
+  const { firstName, lastName } = data.usersRooms.user;
+
+  const creator = `${firstName} ${lastName}`;
+
   return (
       <View>
         {
-
           data.usersRooms.rooms.map(room => (
             <RoomLink 
-              onPressHandler={() => navigation.navigate('Room',  { id: room.id } )} 
+              onPressHandler={() => 
+                navigation.navigate('Room',  
+                  { 
+                    id: room.id, 
+                    name: room.name,
+                    creator,
+                  }
+                )} 
               key={room.id}
               {...room}
             />

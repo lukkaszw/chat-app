@@ -1,13 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+
+import MessagesList from '../../features/MessagesList';
+import AddMessageForm from '../../features/AddMessageForm';
+import RoomInfo from '../../common/RoomInfo';
 
 const Room = ({ route }) => {
 
-  const { id } = route.params;
+  const { id, name, creator } = route.params;
 
   return ( 
-    <View>
+    <View style={styles.container}>
+      <RoomInfo 
+        name={name}
+        creator={creator}
+      />
+      <MessagesList />
+      <AddMessageForm />
     </View>
   );
 }
@@ -15,5 +25,14 @@ const Room = ({ route }) => {
 Room.propTypes = {
   route: PropTypes.object.isRequired,
 };
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: '#777',
+    minHeight: '100%',
+  }
+})
 
 export default Room;
