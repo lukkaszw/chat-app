@@ -28,10 +28,8 @@ Room.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: '#777',
-    minHeight: '100%',
+    backgroundColor: '#fff',
+    height: '100%',
   }
 })
 
