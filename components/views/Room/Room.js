@@ -5,12 +5,20 @@ import { StyleSheet, View } from 'react-native';
 import MessagesList from '../../features/MessagesList';
 import AddMessageForm from '../../features/AddMessageForm';
 import RoomInfo from '../../common/RoomInfo';
+import Loader from '../../common/Loader';
+
+import { useQuery } from '@apollo/client';
+import { GET_ROOM_MESSAGES } from './queries';
 
 const Room = ({ route }) => {
 
   const { id, name, creator } = route.params;
 
+  const { data, loading } = useQuery(GET_ROOM_MESSAGES, {
+    variables: { id },
+  });
 
+  if (loading) return <Loader />;
 
   return ( 
     <View style={styles.container}>
@@ -18,7 +26,7 @@ const Room = ({ route }) => {
         name={name}
         creator={creator}
       />
-      <MessagesList />
+      <MessagesList messages={data.room.messages}/>
       <AddMessageForm />
     </View>
   );
