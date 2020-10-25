@@ -1,22 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { MY_USER_EMAIL } from "@env";
 import PropTypes from 'prop-types';
-import { SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 
 import Message from '../../common/Message';
 
 const MessagesList = ({ messages, subscribeToMoreMessages }) => {
+
+  const scrollViewRef = useRef();
 
   useEffect(() => {
     subscribeToMoreMessages();
   }, []);
 
   return ( 
-    <SafeAreaView style={{ 
-      padding: 10,
-      flex: 1,
-    }}>
-      <ScrollView>
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        ref={scrollViewRef}
+        onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}
+      >
           {
             messages.reverse().map(message => (
               <Message 
@@ -39,5 +41,12 @@ MessagesList.propTypes = {
 MessagesList.defaultProps = {
   messages: [],
 };
+
+const styles = StyleSheet.create({
+  container: { 
+    padding: 10,
+    flex: 1,
+  }
+})
 
 export default MessagesList;
