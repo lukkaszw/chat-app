@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 
@@ -8,7 +8,7 @@ import RoomInfo from '../../common/RoomInfo';
 import Loader from '../../common/Loader';
 
 import { useQuery } from '@apollo/client';
-import { GET_ROOM_MESSAGES } from './queries';
+import { GET_ROOM_MESSAGES, MESSAGE_ADDED_SUBSCRIPTION } from './queries';
 
 import useMessageForm from './useMessageForm';
 
@@ -23,7 +23,7 @@ const Room = ({ route }) => {
     handleOnSubmit,
   } = useMessageForm({ roomId: id });
 
-  const { data, loading } = useQuery(GET_ROOM_MESSAGES, {
+  const { subscribeToMore, data, loading } = useQuery(GET_ROOM_MESSAGES, {
     variables: { id },
   });
 
@@ -37,6 +37,26 @@ const Room = ({ route }) => {
       />
       <MessagesList 
         messages={[...data.room.messages]}
+        subscribeToMoreMessages={() => 
+          subscribeToMore({
+            document: MESSAGE_ADDED_SUBSCRIPTION,
+            variables: { roomId: id },
+            updateQuery: (prev, { subscriptionData }) => {
+              if (!subscriptionData.data) return prev;
+              const newMessage = subscriptionData.data.messageAdded;
+              return ({ 
+                ...prev,
+                room: {
+                  ...prev.room,
+                  messages: [
+                    newMessage,
+                    ...prev.room.messages,
+                  ]
+                }
+              })
+            }
+          })
+        }
       />
       <AddMessageForm 
         value={message}

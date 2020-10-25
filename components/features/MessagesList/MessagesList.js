@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MY_USER_EMAIL } from "@env";
 import PropTypes from 'prop-types';
 import { SafeAreaView, ScrollView } from 'react-native';
 
 import Message from '../../common/Message';
 
-const MessagesList = ({ messages }) => {
+const MessagesList = ({ messages, subscribeToMoreMessages }) => {
+
+  useEffect(() => {
+    subscribeToMoreMessages();
+  }, []);
 
   return ( 
     <SafeAreaView style={{ 
@@ -29,6 +33,7 @@ const MessagesList = ({ messages }) => {
  
 MessagesList.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object),
+  subscribeToMoreMessages: PropTypes.func.isRequired,
 }
 
 MessagesList.defaultProps = {

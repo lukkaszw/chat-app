@@ -31,3 +31,19 @@ export const ADD_MESSAGE = gql`
     }
   }
 `;
+
+export const MESSAGE_ADDED_SUBSCRIPTION = gql`
+  subscription OnMessageAdded($roomId: String!) {
+    messageAdded(roomId: $roomId) {
+      id
+      body
+      insertedAt
+      user {
+        id
+        email
+        firstName
+        lastName
+      }
+    }
+  }
+`;
