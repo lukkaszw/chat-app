@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
 
-const RoomLink = ({ name, id, onPressHandler }) => {
+const RoomLink = ({ name, onPressHandler }) => {
   return ( 
     <View style={styles.container}>
       <TouchableOpacity 
@@ -22,7 +22,6 @@ const RoomLink = ({ name, id, onPressHandler }) => {
 
 RoomLink.propTypes = {
   name: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
   onPressHandler: PropTypes.func.isRequired,
 };
 

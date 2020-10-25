@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { StyleSheet, View, Text } from 'react-native';
 
-const Message = ({ id, body, user, insertedAt, isOwn }) => {
+const Message = ({ body, user, insertedAt, isOwn }) => {
 
   const { firstName, lastName } = user;
 
@@ -32,7 +32,6 @@ const Message = ({ id, body, user, insertedAt, isOwn }) => {
 }
 
 Message.propTypes = {
-  id: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,
   insertedAt: PropTypes.string.isRequired,
   body: PropTypes.string.isRequired,
