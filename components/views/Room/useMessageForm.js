@@ -9,6 +9,10 @@ const useMessageForm = ({ roomId }) => {
   const [sendMessage, { loading }] = useMutation(ADD_MESSAGE);
 
   const handleOnSubmit = useCallback(() => {
+    if(message.length === 0) {
+      return;
+    }
+    
     sendMessage({
       variables: {
         body: message,
