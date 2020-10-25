@@ -7,25 +7,25 @@ import AddMessageForm from '../../features/AddMessageForm';
 import RoomInfo from '../../common/RoomInfo';
 import Loader from '../../common/Loader';
 
-import { useQuery } from '@apollo/client';
-import { GET_ROOM_MESSAGES, MESSAGE_ADDED_SUBSCRIPTION } from './queries';
-
 import useMessageForm from './useMessageForm';
+import useGetMessages from './useGetMessages';
 
 const Room = ({ route }) => {
 
-  const { id, name, creator } = route.params;
+  const { id: roomId, name, creator } = route.params;
 
   const {
     message,
     sending,
     handleChangeMessage,
     handleOnSubmit,
-  } = useMessageForm({ roomId: id });
+  } = useMessageForm({ roomId });
 
-  const { subscribeToMore, data, loading } = useQuery(GET_ROOM_MESSAGES, {
-    variables: { id },
-  });
+  const {
+    messages,
+    loading,
+    handleSubcribeToMoreMessages,
+  } = useGetMessages({ roomId });
 
   if (loading) return <Loader />;
 
@@ -36,27 +36,8 @@ const Room = ({ route }) => {
         creator={creator}
       />
       <MessagesList 
-        messages={[...data.room.messages]}
-        subscribeToMoreMessages={() => 
-          subscribeToMore({
-            document: MESSAGE_ADDED_SUBSCRIPTION,
-            variables: { roomId: id },
-            updateQuery: (prev, { subscriptionData }) => {
-              if (!subscriptionData.data) return prev;
-              const newMessage = subscriptionData.data.messageAdded;
-              return ({ 
-                ...prev,
-                room: {
-                  ...prev.room,
-                  messages: [
-                    newMessage,
-                    ...prev.room.messages,
-                  ]
-                }
-              })
-            }
-          })
-        }
+        messages={messages}
+        subscribeToMoreMessages={handleSubcribeToMoreMessages}
       />
       <AddMessageForm 
         value={message}
